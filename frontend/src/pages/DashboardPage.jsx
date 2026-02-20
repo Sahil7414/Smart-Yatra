@@ -90,6 +90,79 @@ const ReadinessCenter = ({ packingList, localPhrases, destination }) => {
     );
 };
 
+const SafetyCard = () => (
+    <div className="bg-[#FEF2F2] rounded-[32px] p-6 border border-[#FEE2E2] shadow-sm relative overflow-hidden">
+        <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-rose-600 border border-rose-100">
+                <ShieldCheck size={22} />
+            </div>
+            <h3 className="text-xl font-black text-[#991B1B]">Safety & Help</h3>
+        </div>
+        <div className="space-y-4">
+            <div className="bg-white/60 p-3 rounded-2xl border border-rose-200/50">
+                <p className="text-[10px] font-black text-[#991B1B] uppercase tracking-widest mb-1">Emergency Numbers</p>
+                <div className="flex justify-between items-center">
+                    <span className="text-xs font-bold text-gray-700">Police / Emergency</span>
+                    <span className="text-xs font-black text-rose-600">112</span>
+                </div>
+                <div className="flex justify-between items-center mt-1">
+                    <span className="text-xs font-bold text-gray-700">Ambulance</span>
+                    <span className="text-xs font-black text-rose-600">102</span>
+                </div>
+            </div>
+            <p className="text-[11px] text-rose-800 leading-relaxed italic">
+                "Keep your digital documents ready and share your live location with family."
+            </p>
+        </div>
+        <div className="absolute top-0 right-0 w-24 h-24 bg-rose-500/5 rounded-full -mr-12 -mt-12 blur-2xl" />
+    </div>
+);
+
+const Confetti = () => {
+    const [pieces, setPieces] = useState([]);
+    useEffect(() => {
+        const p = Array.from({ length: 50 }).map((_, i) => ({
+            id: i,
+            x: Math.random() * 100,
+            y: -10 - Math.random() * 50,
+            rot: Math.random() * 360,
+            color: ['#3B82F6', '#F59E0B', '#10B981', '#EF4444', '#8B5CF6'][Math.floor(Math.random() * 5)],
+            size: 5 + Math.random() * 10,
+            delay: Math.random() * 2
+        }));
+        setPieces(p);
+    }, []);
+
+    return (
+        <div className="fixed inset-0 pointer-events-none z-[100] overflow-hidden">
+            {pieces.map(p => (
+                <motion.div
+                    key={p.id}
+                    initial={{ y: `${p.y}vh`, x: `${p.x}vw`, rotate: 0, opacity: 1 }}
+                    animate={{
+                        y: '110vh',
+                        x: `${p.x + (Math.random() * 20 - 10)}vw`,
+                        rotate: p.rot + 720,
+                        opacity: 0
+                    }}
+                    transition={{
+                        duration: 3 + Math.random() * 2,
+                        delay: p.delay,
+                        ease: "easeIn"
+                    }}
+                    style={{
+                        position: 'absolute',
+                        width: p.size,
+                        height: p.size,
+                        backgroundColor: p.color,
+                        borderRadius: p.id % 2 === 0 ? '2px' : '50%'
+                    }}
+                />
+            ))}
+        </div>
+    );
+};
+
 import MapModal from '../components/MapModal';
 import { getLatestTrip, isFavoritePlace, toggleFavoritePlace } from '../utils/storage';
 
@@ -254,6 +327,7 @@ const DashboardPage = () => {
 
     return (
         <div className="bg-[#F8FAFC] min-h-screen px-4 md:px-8 py-6 md:py-8 print:p-0">
+            <Confetti />
             {/* Print Only Header */}
             <div className="print-header">
                 <div className="flex justify-between items-center bg-[#0F172A] p-8 text-white rounded-b-3xl">
@@ -537,6 +611,8 @@ const DashboardPage = () => {
                         localPhrases={plan.localPhrases}
                         destination={destination}
                     />
+
+                    <SafetyCard />
 
                     <ConciergeCard
                         title="Recommended Stays"
