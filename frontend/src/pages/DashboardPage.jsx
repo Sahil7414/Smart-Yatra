@@ -365,9 +365,15 @@ const DashboardPage = () => {
             {/* Header */}
             <div className="flex justify-between items-start mb-10 flex-wrap gap-4 no-print">
                 <div>
-                    <h1 className="text-[28px] md:text-[36px] font-extrabold text-[#0F172A] mb-3 leading-tight tracking-tight capitalize">
-                        Your {destination} Adventure Journey
-                    </h1>
+                    <div className="flex items-center gap-3 mb-2">
+                        <h1 className="text-[28px] md:text-[36px] font-extrabold text-[#0F172A] leading-tight tracking-tight capitalize">
+                            Your {destination} Adventure Journey
+                        </h1>
+                        <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-green-50 border border-green-100 animate-pulse active:scale-95 transition-transform cursor-default no-print">
+                            <div className="w-2 h-2 rounded-full bg-green-500" />
+                            <span className="text-[10px] font-black text-green-700 uppercase tracking-widest">Live Trip Status</span>
+                        </div>
+                    </div>
                     <div className="flex items-center gap-x-6 gap-y-3 text-[14px] md:text-[15px] font-semibold text-[#64748B] flex-wrap">
                         <div className="flex items-center gap-2">
                             <Calendar size={18} className="text-blue-500" />
@@ -428,7 +434,7 @@ const DashboardPage = () => {
                             </div>
 
                             {/* Day Content */}
-                            <div className="flex-1 space-y-6 min-w-0">
+                            <div className="flex-1 space-y-6 min-w-0 bg-white/40 backdrop-blur-sm rounded-[40px] p-2 md:p-6 transition-all hover:bg-white/60">
                                 <div className="flex items-center gap-4 flex-wrap">
                                     <h2 className="text-xl md:text-2xl font-black text-[#0F172A] break-words">
                                         Day {day.day || idx + 1}: {day.title || 'Exploring Wonders'}

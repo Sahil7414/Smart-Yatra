@@ -22,7 +22,7 @@ const INDIAN_ATTRACTIONS = [
     { name: 'Victoria Memorial, Kolkata', city: 'Kolkata', rating: 4.6, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Victoria_Memorial_situated_in_Kolkata.jpg/1280px-Victoria_Memorial_situated_in_Kolkata.jpg', tag: 'Heritage' },
     { name: 'Qutub Minar', city: 'Delhi', rating: 4.7, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Qutub_Minar_in_May_2022.jpg/1280px-Qutub_Minar_in_May_2022.jpg', tag: 'UNESCO' },
     { name: 'Amber Fort', city: 'Jaipur', rating: 4.8, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Amber_Fort_2020.jpg/1280px-Amber_Fort_2020.jpg', tag: 'Fort' },
-    { name: 'Golden Temple', city: 'Amritsar', rating: 4.9, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Harmandir_Sahib_in_August_2023.jpg/1280px-Harmandir_Sahib_in_August_2023.jpg', tag: 'Divine' },
+    { name: 'Golden Temple', wikiName: 'Harmandir Sahib', city: 'Amritsar', rating: 4.9, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Harmandir_Sahib_in_August_2023.jpg/1280px-Harmandir_Sahib_in_August_2023.jpg', tag: 'Divine' },
     { name: 'Ellora Caves', city: 'Aurangabad', rating: 4.8, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Ellora_cave_16_Kailasa_temple_01.jpg/1280px-Ellora_cave_16_Kailasa_temple_01.jpg', tag: 'Ancient' },
 ];
 
@@ -38,7 +38,7 @@ const LandingPage = () => {
     useEffect(() => {
         const fetchWikiPhotos = async () => {
             try {
-                const titles = INDIAN_ATTRACTIONS.map(a => encodeURIComponent(a.name)).join('|');
+                const titles = INDIAN_ATTRACTIONS.map(a => encodeURIComponent(a.wikiName || a.name)).join('|');
                 // Added redirects=1 to handle common name mapping (e.g. Amer Fort -> Amber Fort)
                 const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${titles}&prop=pageimages&format=json&pithumbsize=1000&origin=*&redirects=1`;
 
@@ -49,7 +49,8 @@ const LandingPage = () => {
 
                 const updated = INDIAN_ATTRACTIONS.map(attr => {
                     // Find actual page after potential redirect
-                    const redirectedTo = redirects.find(r => r.from === attr.name)?.to || attr.name;
+                    const searchTitle = attr.wikiName || attr.name;
+                    const redirectedTo = redirects.find(r => r.from === searchTitle)?.to || searchTitle;
                     const page = Object.values(pages).find(p => p.title === redirectedTo);
 
                     return {
@@ -117,7 +118,7 @@ const LandingPage = () => {
                     className="text-[48px] md:text-[80px] font-black text-[#0F172A] leading-[1] md:leading-[0.9] tracking-tighter mb-8 md:mb-10"
                 >
                     Don't just travel.<br />
-                    Travel <span className="text-blue-600 italic">Smarter.</span>
+                    Travel <span className="text-gradient italic">Smarter.</span>
                 </motion.h1>
 
                 <motion.p
@@ -138,14 +139,14 @@ const LandingPage = () => {
                 >
                     <button
                         onClick={() => navigate('/plan')}
-                        className="w-full sm:w-auto bg-[#0F172A] hover:bg-black text-white px-8 md:px-10 py-4 md:py-5 rounded-[20px] md:rounded-[24px] font-black flex items-center justify-center gap-3 transition-all shadow-2xl shadow-black/20 group text-base md:text-lg"
+                        className="w-full sm:w-auto bg-[#0F172A] hover:bg-black text-white px-8 md:px-10 py-4 md:py-5 rounded-[20px] md:rounded-[24px] font-black flex items-center justify-center gap-3 transition-all shadow-2xl shadow-black/20 group text-base md:text-lg animate-float"
                     >
                         Plan My Adventure
                         <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                     </button>
                     <button
                         onClick={() => navigate('/plan')}
-                        className="w-full sm:w-auto bg-white hover:bg-gray-50 text-[#0F172A] px-8 md:px-10 py-4 md:py-5 rounded-[20px] md:rounded-[24px] font-black flex items-center justify-center gap-3 transition-all border border-[#E2E8F0] text-base md:text-lg"
+                        className="w-full sm:w-auto bg-white hover:bg-gray-50 text-[#0F172A] px-8 md:px-10 py-4 md:py-5 rounded-[20px] md:rounded-[24px] font-black flex items-center justify-center gap-3 transition-all border border-[#E2E8F0] shadow-xl shadow-gray-100/50 text-base md:text-lg"
                     >
                         View Demo
                     </button>
@@ -201,7 +202,7 @@ const LandingPage = () => {
                                         zIndex: 30 - absOffset,
                                     }}
                                     transition={{ type: 'spring', stiffness: 220, damping: 26 }}
-                                    className="group absolute left-1/2 top-0 h-[250px] w-[180px] md:h-[320px] md:w-[240px] -translate-x-1/2 rounded-2xl overflow-hidden shadow-2xl text-left"
+                                    className="group absolute left-1/2 top-0 h-[250px] w-[180px] md:h-[320px] md:w-[240px] -translate-x-1/2 rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.2)] text-left"
                                     style={{
                                         transformStyle: 'preserve-3d',
                                         pointerEvents: hidden ? 'none' : 'auto',
@@ -216,8 +217,13 @@ const LandingPage = () => {
                                     />
                                     <div className="absolute inset-0 border border-white/60 rounded-2xl" />
                                     <div className="absolute inset-0 bg-black/10 group-hover:bg-black/40 transition-colors duration-300" />
-                                    <div className="absolute inset-x-0 bottom-0 p-4 md:p-5 text-white opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                                        <h4 className="text-base md:text-xl font-black leading-tight">{place.name}</h4>
+                                    <div className="absolute inset-x-0 bottom-0 p-4 md:p-5 text-white bg-gradient-to-t from-black/80 via-black/20 to-transparent">
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <span className="px-2 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-[10px] font-bold uppercase tracking-wider border border-white/10">
+                                                {place.tag}
+                                            </span>
+                                        </div>
+                                        <h4 className="text-base md:text-xl font-black leading-tight group-hover:text-blue-400 transition-colors">{place.name}</h4>
                                     </div>
                                 </motion.button>
                             );

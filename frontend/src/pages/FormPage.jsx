@@ -424,13 +424,18 @@ const PlaceCard = ({ place, city, onViewMap }) => {
     const fallback = `https://picsum.photos/seed/${seed || 'travel'}/800/500`;
 
     return (
-        <div className="bg-white rounded-2xl border border-[#E2E8F0] group hover:border-blue-300 hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col">
+        <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            whileHover={{ y: -4 }}
+            className="bg-white rounded-3xl border border-[#E2E8F0] group hover:border-blue-400 hover:shadow-[0_20px_40px_rgba(37,99,235,0.08)] transition-all duration-300 overflow-hidden flex flex-col"
+        >
             {/* Image */}
-            <div className="h-36 overflow-hidden bg-gray-100 relative">
+            <div className="h-36 overflow-hidden bg-gray-100 relative group-hover:shimmer">
                 <img
                     src={imgError ? fallback : (place.image || fallback)}
                     onError={() => setImgError(true)}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     alt={place.name}
                     loading="lazy"
                 />
@@ -478,7 +483,7 @@ const PlaceCard = ({ place, city, onViewMap }) => {
                     View on Map
                 </button>
             </div>
-        </div>
+        </motion.div>
     );
 };
 
