@@ -39,20 +39,6 @@ const Sidebar = ({ isOpen, onClose }) => {
                 </nav>
             </div>
 
-            <div className="mt-auto p-6">
-                <div className="bg-[#F8FAFC] rounded-2xl p-5 border border-[#E2E8F0] relative overflow-hidden group">
-                    <div className="relative z-10">
-                        <p className="text-[10px] font-bold text-gray-400 tracking-wider uppercase mb-2">Pro Member</p>
-                        <p className="text-xs text-gray-600 mb-4 leading-relaxed">
-                            Unlimited AI trip generations & offline maps.
-                        </p>
-                        <button className="w-full bg-[#0F172A] text-white text-xs font-bold py-3 rounded-lg flex items-center justify-center gap-2 group-hover:bg-black transition-all">
-                            Upgrade Now <ArrowRight size={14} />
-                        </button>
-                    </div>
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-full -mr-8 -mt-8 blur-2xl" />
-                </div>
-            </div>
         </aside>
     );
 };
