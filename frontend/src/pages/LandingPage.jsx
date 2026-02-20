@@ -21,7 +21,7 @@ const INDIAN_ATTRACTIONS = [
     { name: 'Meenakshi Temple', city: 'Madurai', rating: 4.8, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Meenakshi_Amman_West_Tower.jpg/1280px-Meenakshi_Amman_West_Tower.jpg', tag: 'Spiritual' },
     { name: 'Victoria Memorial, Kolkata', city: 'Kolkata', rating: 4.6, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Victoria_Memorial_situated_in_Kolkata.jpg/1280px-Victoria_Memorial_situated_in_Kolkata.jpg', tag: 'Heritage' },
     { name: 'Qutub Minar', city: 'Delhi', rating: 4.7, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Qutub_Minar_in_May_2022.jpg/1280px-Qutub_Minar_in_May_2022.jpg', tag: 'UNESCO' },
-    { name: 'Amber Fort', city: 'Jaipur', rating: 4.8, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Amber_Fort_05.jpg/1280px-Amber_Fort_05.jpg', tag: 'Fort' },
+    { name: 'Amber Fort', city: 'Jaipur', rating: 4.8, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Amber_Fort_2020.jpg/1280px-Amber_Fort_2020.jpg', tag: 'Fort' },
     { name: 'Golden Temple', city: 'Amritsar', rating: 4.9, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Harmandir_Sahib_in_August_2023.jpg/1280px-Harmandir_Sahib_in_August_2023.jpg', tag: 'Divine' },
     { name: 'Ellora Caves', city: 'Aurangabad', rating: 4.8, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Ellora_cave_16_Kailasa_temple_01.jpg/1280px-Ellora_cave_16_Kailasa_temple_01.jpg', tag: 'Ancient' },
 ];
