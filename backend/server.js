@@ -6,7 +6,7 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5002;
 
 app.use(cors());
 app.use(express.json());
@@ -556,41 +556,41 @@ const computeBudgetBreakdown = ({ itinerary = [], budget = 0, destination = 'you
   const activities = itinerary.flatMap(day => {
     if (!day.activities) return [];
     if (Array.isArray(day.activities)) return day.activities;
-    // Handle Morning/Afternoon/Evening object
     return Object.values(day.activities);
   });
   const totalPlaces = activities.length;
-  const totalTravelers = (Number(adults) || 1) + (Number(children) || 0);
+  const travelersCount = (Number(adults) || 1) + (Number(children) || 0);
+  const totalDays = Math.max(1, Number(numDays) || 1);
 
-  // Base daily costs per person based on style
-  let baseFoodPerDay = 800;
-  let baseTransportPerDay = 500;
-
-  if (travelStyle === 'Comfort') {
-    baseFoodPerDay = 1500;
-    baseTransportPerDay = 1200;
-  } else if (travelStyle === 'Luxury') {
-    baseFoodPerDay = 3500;
-    baseTransportPerDay = 3000;
-  }
-
+  // Calculate actual entry fees from the itinerary activities
   const entryFees = Math.round(
     activities.reduce((sum, activity) => sum + Math.max(0, toNumber(activity?.cost)), 0) * (Number(adults) + (Number(children) * 0.5))
   );
 
-  const safeDays = Math.max(1, Number(numDays) || 1);
-  const minTransport = Math.round((safeDays * baseTransportPerDay + totalPlaces * 150) * Math.sqrt(totalTravelers));
-  const minFoodMisc = Math.round(safeDays * baseFoodPerDay * totalTravelers);
   const requestedBudget = Math.max(0, Math.round(toNumber(budget)));
-  // We respect the user's budget if it's provided, otherwise we use the minimum needed.
-  let totalCost = requestedBudget >= 100 ? requestedBudget : (entryFees + minTransport + minFoodMisc);
+  let totalCost = requestedBudget > 0 ? requestedBudget : (entryFees + (totalDays * 1500 * travelersCount));
 
-  const remaining = Math.max(0, totalCost - entryFees);
-  let transport = Math.round(remaining * 0.4);
-  let foodMisc = totalCost - entryFees - transport;
+  // REALISM FIX: For very high budgets, don't just use percentages.
+  // Cap basic needs and put the rest in a 'Luxury Buffer' if it's too high.
+  const capPerDayTransport = travelStyle === 'Luxury' ? 5000 : 2000;
+  const capPerDayFood = travelStyle === 'Luxury' ? 8000 : 3000;
 
-  // No more auto-bumping. We show what the user asked for.
-  // If it's too low, the chart will simply show the disparity.
+  let transport = Math.round(Math.min(requestedBudget * 0.4, totalDays * capPerDayTransport * travelersCount));
+  let foodMisc = Math.round(Math.min(requestedBudget * 0.6, totalDays * capPerDayFood * travelersCount));
+
+  // If we have a massive surplus (like 5 Lakh for 1 day), we redistribute or call it Luxury Premium
+  const calculatedTotal = entryFees + transport + foodMisc;
+  if (requestedBudget > calculatedTotal * 1.5) {
+    // Redistribute surplus to keep segments looking 'full' of the user's budget but capped
+    const surplus = requestedBudget - entryFees;
+    transport = Math.round(surplus * 0.4);
+    foodMisc = requestedBudget - entryFees - transport;
+  } else if (requestedBudget > 0) {
+    // Ensure it sums up to requestedBudget
+    const remaining = Math.max(0, requestedBudget - entryFees);
+    transport = Math.round(remaining * 0.4);
+    foodMisc = requestedBudget - entryFees - transport;
+  }
 
   const interestText = String(interests || '').trim();
   const focusText = interestText && interestText !== 'Heritage, Culture'
@@ -605,7 +605,7 @@ const computeBudgetBreakdown = ({ itinerary = [], budget = 0, destination = 'you
     entryFees,
     transport,
     foodMisc,
-    explanation: `Built for ${travelersText} spending ${safeDays} day(s) in ${destination} with a ${travelStyle} style. This plan prioritizes ${focusText}. Budget reflects optimized transport and meal costs for your group.`,
+    explanation: `Built for ${travelersText} spending ${totalDays} day(s) in ${destination}. This plan prioritizes ${focusText}. ${requestedBudget < 2000 ? "We've highly optimized for a shoestring budget, focusing on free attractions." : "Budget reflects optimized transport and meal costs for your travel style."}`,
   };
 };
 app.post('/api/generate-itinerary', async (req, res) => {
@@ -664,8 +664,8 @@ RULES:
 - LOCAL PHRASES: 3-4 phrases in the regional language.
 - INCLUDE 2-3 REAL accommodations matching ${style} style.
 - INCLUDE 2-3 REAL local food or restaurant recommendations.
-- BUDGET CONSCIOUS: If budget (Rs ${safeBudget}) is low, prioritize FREE activities (cost: 0).
 - NEVER suggest an activity where group entry fees exceed Rs ${safeBudget}.
+- FOR VERY LOW BUDGETS (like Rs ${safeBudget} < 2000): Use cost 0 for ALMOST EVERYTHING. India has many free parks, temples, and markets.
 - Each activity 'cost' MUST be a RAW NUMBER (e.g. 500), NO symbols, NO commas.
 - For each day, provide EXACTLY 3 activities: 'morning', 'afternoon', 'evening'.
 - Use REAL place names of ${destination}.
@@ -741,30 +741,46 @@ RULES:
     data.localEats = await enrichWithImages(data.localEats, destination);
 
     // 🧪 THE REALITY CHECK: Sanitize and Fix AI "Cheating"
-    console.log(`🧪 Performing Reality Check on ${destination} budget...`);
+    console.log(`🧪 Performing Reality Check on ${destination} (Budget: ₹${safeBudget})...`);
     let manualEntryFees = 0;
     const totalTravelers = safeAdults + (safeChildren * 0.5);
 
-    data.itinerary.forEach(day => {
+    data.itinerary.forEach((day, dayIdx) => {
       const slots = day.activities || {};
-      Object.keys(slots).forEach(slot => {
-        let act = slots[slot];
-        let costNum = toNumber(act.cost);
-        let groupCost = costNum * totalTravelers;
+      Object.keys(slots).forEach(slotName => {
+        let act = slots[slotName];
+        let originalCost = toNumber(act.cost);
+        let groupCost = originalCost * totalTravelers;
 
-        // If the group cost for this one place exceeds the entire budget, force to Free
-        if (groupCost > safeBudget && safeBudget > 0) {
-          console.log(`⚠️ Budget Violation: ${act.name} group cost ₹${groupCost} exceeds total budget ₹${safeBudget}. Forcing to 0.`);
+        // CRITICAL BUG FIX: If group cost for this ONE place exceeds the WHOLE budget OR the budget is tiny (< Rs 1000) 
+        // AND this isn't a free place, force it to 0.
+        if (groupCost > safeBudget || (safeBudget < 1000 && originalCost > 50)) {
+          console.log(`⚠️ Budget Violation Day ${dayIdx + 1}: ${act.name} (₹${originalCost}) group cost ₹${groupCost} > budget ₹${safeBudget}. FORCING TO FREE.`);
           act.cost = 0;
-          act.insight = `(Budget Choice) We've selected the free-access areas of ${act.name} to keep your family trip within the ₹${safeBudget} budget.`;
-          costNum = 0;
+          act.insight = `(Budget Choice) We've opted for a walk-around or free-access section of ${act.name} to fit your ₹${safeBudget} trip.`;
+          originalCost = 0;
         }
 
         // Clean the cost in the JSON
-        act.cost = costNum;
-        manualEntryFees += costNum * totalTravelers;
+        act.cost = Math.round(originalCost);
+        manualEntryFees += originalCost * totalTravelers;
       });
     });
+
+    // Check if the sum of all entry fees is still too high
+    if (manualEntryFees > safeBudget && safeBudget > 0) {
+      console.log(`❌ TOTAL FEES ₹${manualEntryFees} still exceeds budget ₹${safeBudget}. Performing aggressive cost reduction...`);
+      data.itinerary.forEach(day => {
+        const slots = day.activities || {};
+        Object.keys(slots).forEach(slot => {
+          if (slots[slot].cost > 0) {
+            slots[slot].cost = 0;
+            slots[slot].insight = `(Low Budget) Enjoying the external view and local vibe to save on entry fees.`;
+          }
+        });
+      });
+      manualEntryFees = 0;
+    }
 
     const normalizedBudget = computeBudgetBreakdown({
       itinerary: data.itinerary,
@@ -782,7 +798,8 @@ RULES:
       ...data,
       ...normalizedBudget,
       entryFees: Math.round(manualEntryFees),
-      totalCost: Math.max(safeBudget, Math.round(manualEntryFees + normalizedBudget.transport + normalizedBudget.foodMisc))
+      totalCost: safeBudget > 0 ? safeBudget : Math.round(manualEntryFees + normalizedBudget.transport + normalizedBudget.foodMisc),
+      packingList: getDynamicPackingList(destination, interestStr)
     };
 
     res.json(data);
@@ -791,6 +808,51 @@ RULES:
     res.status(500).json({ error: 'Failed to generate itinerary. Please try again.' });
   }
 });
+
+/**
+ * Generates a localized packing list based on the destination's known climate/type.
+ */
+function getDynamicPackingList(destination, interests = '') {
+  const d = destination.toLowerCase();
+  const hillStations = ['manali', 'shimla', 'munnar', 'gangtok', 'leh', 'ladakh', 'nainital', 'mussoorie', 'ooty', 'darjeeling', 'gulmarg', 'shillong'];
+  const coastal = ['goa', 'mumbai', 'kochi', 'chennai', 'vizag', 'pondicherry', 'kerala', 'varkala', 'alleppey', 'andaman'];
+  const spiritual = ['varanasi', 'rishikesh', 'haridwar', 'tirupati', 'puri', 'amritsar', 'shirdi', 'kedarnath', 'badrinath'];
+  const desert = ['jaipur', 'jodhpur', 'jaisalmer', 'bikaner', 'pushkar', 'udaipur'];
+
+  const list = [];
+
+  // 1. Weather/Region Specific
+  if (hillStations.some(h => d.includes(h))) {
+    list.push({ category: "Weather", item: "Layered Woolens", reason: "Temperatures drop significantly at night in high altitudes." });
+    list.push({ category: "Health", item: "Motion Sickness Meds", reason: "For curvy mountain roads (ghats) while traveling." });
+    list.push({ category: "Skin Care", item: "Moisturizer/Lip Balm", reason: "Mountain air can be very dry regardless of sun." });
+  } else if (coastal.some(c => d.includes(c))) {
+    list.push({ category: "Weather", item: "Breathable Cotton", reason: "High humidity requires lightweight, quick-dry fabrics." });
+    list.push({ category: "Essentials", item: "Waterproof Phone Pouch", reason: "Essential for boat rides and beach activities." });
+    list.push({ category: "Footwear", item: "Flip Flops/Sandals", reason: "Best for sandy terrain and humid coastal walks." });
+  } else if (desert.some(ds => d.includes(ds))) {
+    list.push({ category: "Weather", item: "Cotton Scarf/Stole", reason: "Protects against direct sun and dust during desert safaris." });
+    list.push({ category: "Skin Care", item: "High SPF Sunscreen", reason: "Intense sun exposure in the Rajasthan plains." });
+    list.push({ category: "Essentials", item: "Hydration Salts (ORS)", reason: "Crucial for staying hydrated in the dry heat." });
+  } else {
+    list.push({ category: "Weather", item: "Universal Light Jacket", reason: "Good for air-conditioned travel or slight evening breeze." });
+    list.push({ category: "Essentials", item: "Universal Adapter", reason: "Ensures your devices stay charged during long tours." });
+  }
+
+  // 2. Interest/Activity Specific
+  if (interests.toLowerCase().includes('spiritual') || spiritual.some(s => d.includes(s))) {
+    list.push({ category: "Cultural", item: "Modest Clothing", reason: "Required for entry into most temples and sacred sites." });
+    list.push({ category: "Essentials", item: "Slip-on Shoes", reason: "Easier to remove outside temples and shrines." });
+  } else if (interests.toLowerCase().includes('adventure')) {
+    list.push({ category: "Activities", item: "Sturdy Hiking Shoes", reason: "Necessary for grip on uneven trails or trekking." });
+    list.push({ category: "Gear", item: "Small Daypack", reason: "To carry water and essentials during outdoor treks." });
+  } else {
+    list.push({ category: "Activities", item: "Comfortable Walking Shoes", reason: "Essential for exploring city heritage sites on foot." });
+    list.push({ category: "Tech", item: "Power Bank", reason: "Keep your phone charged for maps and photos all day." });
+  }
+
+  return list;
+}
 
 // ─── ITINERARY FALLBACK ───────────────────────────────────────────────────────
 async function buildItineraryFallback(destination, numDays, budget, interests) {
@@ -820,10 +882,11 @@ async function buildItineraryFallback(destination, numDays, budget, interests) {
       activities = {};
       slots.forEach((slot, offset) => {
         const place = realPlaces[(startIdx + offset) % realPlaces.length];
+        const isLowBudget = parseInt(budget) < 2000;
         activities[slot] = {
           name: place.name,
-          cost: offset === 0 ? 500 : offset === 1 ? 200 : 0,
-          insight: place.description,
+          cost: isLowBudget ? 0 : (offset === 0 ? 500 : offset === 1 ? 200 : 0),
+          insight: isLowBudget ? `Enjoying the free sections of ${place.name}.` : place.description,
           duration: ['3 Hours', '2 Hours', '1.5 Hours'][offset],
           type: place.category,
           rating: parseFloat(place.rating) || 4.5
@@ -833,10 +896,11 @@ async function buildItineraryFallback(destination, numDays, budget, interests) {
       activities = {};
       slots.forEach((slot, j) => {
         const actName = tmpl.acts[j];
+        const isLowBudget = parseInt(budget) < 2000;
         activities[slot] = {
           name: `${destination} ${actName}`,
-          cost: j === 0 ? 500 : j === 1 ? 200 : 0,
-          insight: `Visiting ${destination}'s ${actName.toLowerCase()} is a highlight of any trip. Plan 2-3 hours and go early morning for the best experience.`,
+          cost: isLowBudget ? 0 : (j === 0 ? 500 : j === 1 ? 200 : 0),
+          insight: isLowBudget ? `Exploring the public vibrant spaces of ${destination}.` : `Visiting ${destination}'s ${actName.toLowerCase()} is a highlight of any trip.`,
           duration: ['3 Hours', '2 Hours', '1.5 Hours'][j],
           type: ['Heritage', 'Cultural', 'Nature'][j],
           rating: 4.5
@@ -870,10 +934,7 @@ async function buildItineraryFallback(destination, numDays, budget, interests) {
     itinerary,
     accommodations,
     localEats,
-    packingList: [
-      { category: "Weather", item: "Sunscreen", reason: "Sunny tropical climate" },
-      { category: "Activities", item: "Comfortable Shoes", reason: "For sightseeing walks" }
-    ],
+    packingList: getDynamicPackingList(destination, interests),
     localPhrases: [
       { phrase: "Namaste", translation: "Hello", usage: "Universal greeting" },
       { phrase: "Kitna hai?", translation: "How much?", usage: "Shopping" }

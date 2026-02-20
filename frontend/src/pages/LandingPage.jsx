@@ -117,7 +117,7 @@ const LandingPage = () => {
             <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-3xl -mr-64 -mt-64" />
             <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-orange-500/5 rounded-full blur-3xl -ml-64 -mb-64" />
 
-            <div className="max-w-7xl mx-auto px-8 pt-20 pb-16 flex flex-col items-center text-center relative z-10">
+            <div className="max-w-7xl mx-auto px-4 sm:px-8 pt-12 md:pt-20 pb-16 flex flex-col items-center text-center relative z-10">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -131,7 +131,7 @@ const LandingPage = () => {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
-                    className="text-[80px] font-black text-[#0F172A] leading-[0.9] tracking-tighter mb-10"
+                    className="text-[48px] md:text-[80px] font-black text-[#0F172A] leading-[1] md:leading-[0.9] tracking-tighter mb-8 md:mb-10"
                 >
                     Don't just travel.<br />
                     Travel <span className="text-blue-600 italic">Smarter.</span>
@@ -141,7 +141,7 @@ const LandingPage = () => {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
-                    className="max-w-xl text-[#64748B] text-xl font-medium leading-relaxed mb-12"
+                    className="max-w-xl text-[#64748B] text-lg md:text-xl font-medium leading-relaxed mb-10 md:mb-12"
                 >
                     The #1 AI-powered travel assistant that curates the most authentic,
                     efficient, and personalized itineraries for your Indian adventures.
@@ -151,18 +151,18 @@ const LandingPage = () => {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
-                    className="flex items-center gap-4"
+                    className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto"
                 >
                     <button
                         onClick={() => navigate('/plan')}
-                        className="bg-[#0F172A] hover:bg-black text-white px-10 py-5 rounded-[24px] font-black flex items-center gap-3 transition-all shadow-2xl shadow-black/20 group text-lg"
+                        className="w-full sm:w-auto bg-[#0F172A] hover:bg-black text-white px-8 md:px-10 py-4 md:py-5 rounded-[20px] md:rounded-[24px] font-black flex items-center justify-center gap-3 transition-all shadow-2xl shadow-black/20 group text-base md:text-lg"
                     >
                         Plan My Adventure
                         <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                     </button>
                     <button
                         onClick={() => navigate('/plan')}
-                        className="bg-white hover:bg-gray-50 text-[#0F172A] px-10 py-5 rounded-[24px] font-black flex items-center gap-3 transition-all border border-[#E2E8F0] text-lg"
+                        className="w-full sm:w-auto bg-white hover:bg-gray-50 text-[#0F172A] px-8 md:px-10 py-4 md:py-5 rounded-[20px] md:rounded-[24px] font-black flex items-center justify-center gap-3 transition-all border border-[#E2E8F0] text-base md:text-lg"
                     >
                         View Demo
                     </button>
@@ -243,7 +243,7 @@ const LandingPage = () => {
                 </motion.div>
 
                 {/* Features */}
-                <div className="mt-28 grid grid-cols-1 md:grid-cols-4 gap-12 w-full max-w-5xl">
+                <div className="mt-20 md:mt-28 grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 w-full max-w-5xl">
                     <LandingFeature icon={<Zap size={24} />} title="Lightning Fast" />
                     <LandingFeature icon={<ShieldCheck size={24} />} title="Verified Data" />
                     <LandingFeature icon={<Globe size={24} />} title="Pan-India Coverage" />

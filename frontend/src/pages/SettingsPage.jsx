@@ -26,12 +26,12 @@ const SettingsPage = () => {
     }, [settings]);
 
     return (
-        <div className="min-h-screen bg-[#F8FAFC] px-8 py-10">
+        <div className="min-h-screen bg-[#F8FAFC] px-4 md:px-8 py-10 pt-20 lg:pt-10">
             <div className="max-w-5xl mx-auto">
-                <div className="mb-8">
-                    <p className="text-[11px] font-black uppercase tracking-[0.24em] text-blue-600">Settings</p>
-                    <h1 className="text-4xl font-black text-[#0F172A] mt-2">Profile Preferences</h1>
-                    <p className="text-[#64748B] font-medium mt-3">
+                <div className="mb-8 font-black uppercase tracking-[0.24em] text-blue-600">
+                    <p className="text-[11px]">Settings</p>
+                    <h1 className="text-3xl md:text-4xl text-[#0F172A] mt-2 normal-case tracking-normal font-black">Profile Preferences</h1>
+                    <p className="text-[#64748B] font-medium mt-3 text-sm md:text-base normal-case tracking-normal">
                         These settings are saved locally in your browser.
                     </p>
                 </div>

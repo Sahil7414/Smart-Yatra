@@ -13,13 +13,13 @@ const MyTripsPage = () => {
     );
 
     return (
-        <div className="min-h-screen bg-[#F8FAFC] px-8 py-10">
+        <div className="min-h-screen bg-[#F8FAFC] px-4 md:px-8 py-10 pt-20 lg:pt-10">
             <div className="max-w-5xl mx-auto">
                 <div className="mb-8">
                     <p className="text-[11px] font-black uppercase tracking-[0.24em] text-blue-600">My Trips</p>
-                    <h1 className="text-4xl font-black text-[#0F172A] mt-2">Your Planned Journeys</h1>
-                    <p className="text-[#64748B] font-medium mt-3">
-                        This section will list all your generated itineraries with quick reopen support.
+                    <h1 className="text-3xl md:text-4xl font-black text-[#0F172A] mt-2">Your Planned Journeys</h1>
+                    <p className="text-[#64748B] font-medium mt-3 text-sm md:text-base">
+                        This section lists all your generated itineraries with quick reopen support.
                     </p>
                 </div>
 

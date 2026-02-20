@@ -121,7 +121,7 @@ const FormPage = () => {
     };
 
     return (
-        <div className="min-h-screen py-10 px-8 bg-[#F8FAFC]">
+        <div className="min-h-screen py-10 px-4 md:px-8 bg-[#F8FAFC]">
             {/* Embedded Map Modal */}
             {mapModal && (
                 <MapModal
@@ -132,21 +132,21 @@ const FormPage = () => {
                     onClose={() => setMapModal(null)}
                 />
             )}
-            <header className="text-center mb-10">
-                <h1 className="text-4xl font-extrabold text-[#0F172A] mb-3 leading-tight tracking-tight">Plan Your Real-Time Adventure</h1>
-                <p className="text-gray-500 text-lg font-medium">Search any city and our AI will fetch the latest attractions for you.</p>
+            <header className="text-center mb-8 md:mb-10 pt-10 lg:pt-0">
+                <h1 className="text-2xl md:text-4xl font-extrabold text-[#0F172A] mb-3 leading-tight tracking-tight px-4">Plan Your Real-Time Adventure</h1>
+                <p className="text-gray-500 text-base md:text-lg font-medium px-4">Search any city and our AI will fetch the latest attractions for you.</p>
             </header>
 
             <div className="max-w-5xl mx-auto space-y-8">
                 {/* Search Card */}
-                <div className="bg-white rounded-[32px] p-8 shadow-xl shadow-blue-500/5 border border-[#E2E8F0]">
+                <div className="bg-white rounded-[24px] md:rounded-[32px] p-6 md:p-8 shadow-xl shadow-blue-500/5 border border-[#E2E8F0]">
                     <div className="flex flex-col md:flex-row gap-4">
                         <div className="flex-1 relative group">
-                            <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-[#94A3B8] transition-colors group-focus-within:text-blue-500" size={24} />
+                            <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-[#94A3B8] transition-colors group-focus-within:text-blue-500" size={20} />
                             <input
                                 type="text"
                                 placeholder="Search city (e.g. Mumbai, Varanasi, Manali...)"
-                                className="w-full pl-14 pr-6 py-5 rounded-2xl border border-[#E2E8F0] focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all font-semibold text-lg"
+                                className="w-full pl-12 pr-6 py-4 md:pl-14 md:py-5 rounded-xl md:rounded-2xl border border-[#E2E8F0] focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all font-semibold text-base md:text-lg"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
@@ -155,9 +155,9 @@ const FormPage = () => {
                         <button
                             onClick={handleSearch}
                             disabled={searching}
-                            className="bg-[#2563EB] text-white px-10 py-5 rounded-2xl font-black text-lg shadow-lg shadow-blue-500/20 hover:bg-blue-700 transition-all flex items-center justify-center gap-2"
+                            className="bg-[#2563EB] text-white px-8 md:px-10 py-4 md:py-5 rounded-xl md:rounded-2xl font-black text-base md:text-lg shadow-lg shadow-blue-500/20 hover:bg-blue-700 transition-all flex items-center justify-center gap-2"
                         >
-                            {searching ? <Loader2 className="animate-spin" /> : "Search Places"}
+                            {searching ? <Loader2 className="animate-spin" size={20} /> : "Search Places"}
                         </button>
                     </div>
 
@@ -193,7 +193,7 @@ const FormPage = () => {
                 </div>
 
                 {/* Preferences Card */}
-                <div className="bg-white rounded-[32px] p-10 shadow-xl shadow-blue-500/5 border border-[#E2E8F0]">
+                <div className="bg-white rounded-[24px] md:rounded-[32px] p-6 md:p-10 shadow-xl shadow-blue-500/5 border border-[#E2E8F0]">
                     <div className="space-y-10">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             {/* Days Stepper */}
@@ -230,8 +230,11 @@ const FormPage = () => {
                                     <input
                                         type="number"
                                         className="w-full pl-6 pr-6 py-4 rounded-2xl border border-[#E2E8F0] focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all font-semibold text-lg bg-[#F8FAFC]"
-                                        value={formData.budget}
-                                        onChange={(e) => setFormData({ ...formData, budget: parseInt(e.target.value) || 0 })}
+                                        value={formData.budget === 0 ? '' : formData.budget}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            setFormData({ ...formData, budget: val === '' ? 0 : parseInt(val) });
+                                        }}
                                         placeholder="Enter amount (e.g. 50000)"
                                         min="1000"
                                     />
@@ -323,21 +326,21 @@ const FormPage = () => {
                         {/* Interests */}
                         <div className="space-y-4">
                             <label className="text-sm font-bold text-[#1E293B] uppercase tracking-wider">Interests (Select all that apply)</label>
-                            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                            <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
                                 {interestOptions.map(opt => (
                                     <button
                                         key={opt.label}
                                         type="button"
                                         onClick={() => toggleInterest(opt.label)}
-                                        className={`flex flex-col items-center justify-center p-6 rounded-[24px] border-2 transition-all gap-3 ${formData.interests.includes(opt.label)
+                                        className={`flex flex-col items-center justify-center p-4 md:p-6 rounded-[20px] md:rounded-[24px] border-2 transition-all gap-2 md:gap-3 ${formData.interests.includes(opt.label)
                                             ? 'bg-[#F0F7FF] border-[#3B82F6] text-[#2563EB] shadow-lg shadow-blue-500/5 scale-[1.02]'
                                             : 'bg-white border-[#F1F5F9] text-[#64748B] hover:border-[#E2E8F0]'
                                             }`}
                                     >
                                         <div className={`${formData.interests.includes(opt.label) ? 'text-[#3B82F6]' : 'text-[#94A3B8]'}`}>
-                                            {opt.icon}
+                                            {React.cloneElement(opt.icon, { size: 20 })}
                                         </div>
-                                        <span className="text-[13px] font-bold tracking-tight">{opt.label}</span>
+                                        <span className="text-[12px] md:text-[13px] font-bold tracking-tight">{opt.label}</span>
                                     </button>
                                 ))}
                             </div>
@@ -347,16 +350,16 @@ const FormPage = () => {
                             type="button"
                             onClick={handleSubmit}
                             disabled={loading}
-                            className="w-full bg-[#0F172A] hover:bg-black text-white h-20 rounded-[24px] flex items-center justify-center gap-4 text-xl font-black transition-all shadow-2xl shadow-black/20 group active:scale-[0.98]"
+                            className="w-full bg-[#0F172A] hover:bg-black text-white h-16 md:h-20 rounded-[20px] md:rounded-[24px] flex items-center justify-center gap-4 text-lg md:text-xl font-black transition-all shadow-2xl shadow-black/20 group active:scale-[0.98]"
                         >
                             {loading ? (
                                 <div className="flex items-center gap-3">
-                                    <Loader2 className="animate-spin w-6 h-6" />
-                                    <span>AI is Crafting Your Trip...</span>
+                                    <Loader2 className="animate-spin w-5 h-5 md:w-6 md:h-6" />
+                                    <span className="text-sm md:text-xl">AI is Crafting Your Trip...</span>
                                 </div>
                             ) : (
                                 <>
-                                    <Sparkles className="w-7 h-7" />
+                                    <Sparkles className="w-6 h-6 md:w-7 md:h-7" />
                                     <span>Create My Smart Itinerary</span>
                                 </>
                             )}

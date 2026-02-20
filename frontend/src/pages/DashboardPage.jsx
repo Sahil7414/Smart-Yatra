@@ -253,12 +253,12 @@ const DashboardPage = () => {
     })();
 
     return (
-        <div className="bg-[#F8FAFC] min-h-screen px-8 py-8 print:p-0">
+        <div className="bg-[#F8FAFC] min-h-screen px-4 md:px-8 py-6 md:py-8 print:p-0">
             {/* Print Only Header */}
             <div className="print-header">
                 <div className="flex justify-between items-center bg-[#0F172A] p-8 text-white rounded-b-3xl">
                     <div>
-                        <h1 className="text-3xl font-black tracking-tighter mb-1">BHARAT TRAVEL AI</h1>
+                        <h1 className="text-3xl font-black tracking-tighter mb-1">SMART YATRA</h1>
                         <p className="text-blue-300 font-bold text-xs uppercase tracking-[0.3em]">Official Trip Itinerary</p>
                     </div>
                     <div className="text-right">
@@ -279,39 +279,33 @@ const DashboardPage = () => {
                 />
             )}
             {/* Breadcrumbs */}
-            <nav className="flex items-center gap-2 text-[13px] font-medium text-[#94A3B8] mb-6 no-print">
+            <nav className="flex items-center gap-2 text-[13px] font-medium text-[#94A3B8] mb-6 no-print pt-12 lg:pt-0">
                 <button onClick={() => navigate('/')} className="hover:text-blue-600 transition-colors">Home</button>
                 <ChevronRight size={14} />
                 <button onClick={() => navigate('/plan')} className="hover:text-blue-600 transition-colors">Plan</button>
                 <ChevronRight size={14} />
-                <span className="text-[#1E293B] font-semibold">{destination} Journey</span>
+                <span className="text-[#1E293B] font-semibold truncate max-w-[100px] sm:max-w-none">{destination} Journey</span>
             </nav>
 
             {/* Header */}
             <div className="flex justify-between items-start mb-10 flex-wrap gap-4 no-print">
                 <div>
-                    <h1 className="text-[36px] font-extrabold text-[#0F172A] mb-3 leading-tight tracking-tight capitalize">
+                    <h1 className="text-[28px] md:text-[36px] font-extrabold text-[#0F172A] mb-3 leading-tight tracking-tight capitalize">
                         Your {destination} Adventure Journey
                     </h1>
-                    <div className="flex items-center gap-6 text-[15px] font-semibold text-[#64748B] flex-wrap gap-y-2">
+                    <div className="flex items-center gap-x-6 gap-y-3 text-[14px] md:text-[15px] font-semibold text-[#64748B] flex-wrap">
                         <div className="flex items-center gap-2">
                             <Calendar size={18} className="text-blue-500" />
-                            <span>{numDays}-Day AI-Optimized Plan</span>
+                            <span>{numDays}-Day AI Plan</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <Users size={18} className="text-blue-500" />
-                            <span>{preferences.adults} Adults {preferences.children > 0 && `• ${preferences.children} Kids`}</span>
+                            <span>{preferences.adults}A {preferences.children > 0 && `• ${preferences.children}C`}</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <Zap size={18} className="text-orange-500" />
-                            <span>{preferences.travelStyle} Style</span>
+                            <span>{preferences.travelStyle}</span>
                         </div>
-                        {interests.length > 0 && (
-                            <div className="flex items-center gap-2">
-                                <Sparkles size={18} className="text-orange-500" />
-                                <span>{interests.join(' • ')}</span>
-                            </div>
-                        )}
                     </div>
                 </div>
                 <div className="flex items-center gap-3 flex-wrap">
@@ -337,7 +331,7 @@ const DashboardPage = () => {
                 </div>
             </div>
 
-            <div className="flex gap-10 items-start print:block">
+            <div className="flex flex-col lg:flex-row gap-8 md:gap-10 items-start print:block">
                 {/* Main Content – All Days */}
                 <div className="flex-1 space-y-12 pb-20 print:space-y-8">
                     {plan.itinerary.map((day, idx) => (
@@ -350,7 +344,7 @@ const DashboardPage = () => {
                         >
                             {/* Timeline Number */}
                             <div className="relative flex-shrink-0">
-                                <div className="w-10 h-10 bg-[#2563EB] rounded-full flex items-center justify-center text-white font-bold text-lg sticky top-8 z-10 shadow-lg shadow-blue-500/20">
+                                <div className="w-8 h-8 md:w-10 md:h-10 bg-[#2563EB] rounded-full flex items-center justify-center text-white font-bold text-base md:text-lg sticky top-20 lg:top-8 z-10 shadow-lg shadow-blue-500/20">
                                     {day.day || idx + 1}
                                 </div>
                                 {idx !== plan.itinerary.length - 1 && (
@@ -359,13 +353,13 @@ const DashboardPage = () => {
                             </div>
 
                             {/* Day Content */}
-                            <div className="flex-1 space-y-6">
+                            <div className="flex-1 space-y-6 min-w-0">
                                 <div className="flex items-center gap-4 flex-wrap">
-                                    <h2 className="text-2xl font-black text-[#0F172A]">
+                                    <h2 className="text-xl md:text-2xl font-black text-[#0F172A] break-words">
                                         Day {day.day || idx + 1}: {day.title || 'Exploring Wonders'}
                                     </h2>
                                     {idx === 0 && (
-                                        <span className="bg-orange-50 text-orange-600 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-orange-100 italic">
+                                        <span className="bg-orange-50 text-orange-600 px-3 py-1 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest border border-orange-100 italic">
                                             Start Here
                                         </span>
                                     )}
@@ -413,7 +407,7 @@ const DashboardPage = () => {
                     ))}
                 </div>
 
-                <aside className="w-[360px] space-y-6 sticky top-8 h-fit flex-shrink-0 no-print">
+                <aside className="w-full lg:w-[360px] space-y-6 lg:sticky lg:top-8 h-fit flex-shrink-0 no-print">
                     {/* Trip Summary */}
                     <div className="bg-[#2563EB] rounded-[32px] p-6 text-white shadow-2xl shadow-blue-500/20 relative overflow-hidden">
                         <div className="relative z-10">
@@ -456,7 +450,7 @@ const DashboardPage = () => {
                                             <div key={part.label} className="space-y-1">
                                                 <div className="flex items-center justify-between text-[10px] font-black">
                                                     <span className="text-blue-100/60 uppercase tracking-tighter">{part.label}</span>
-                                                    <span>{pct}%</span>
+                                                    <span>{pct === 0 && part.value > 0 ? '<1' : pct}%</span>
                                                 </div>
                                                 <div className="h-1 bg-white/5 rounded-full overflow-hidden">
                                                     <div
@@ -491,7 +485,7 @@ const DashboardPage = () => {
                                 </button>
                                 <button
                                     onClick={() => {
-                                        const text = `Check out my ${numDays}-day AI-planned itinerary for ${destination}! Planned with BharatTravel AI.`;
+                                        const text = `Check out my ${numDays}-day AI-planned itinerary for ${destination}! Planned with Smart Yatra.`;
                                         if (navigator.share) {
                                             navigator.share({ title: `${destination} Itinerary`, text });
                                         } else {
@@ -532,7 +526,7 @@ const DashboardPage = () => {
                             <InsightRow
                                 icon={<Users size={18} className="text-green-500" />}
                                 title="Budget Smart"
-                                desc={`Mix includes ${paidActivities} paid and ${freeActivities} free activities. Entry fees are ${Math.round((tripFinance.entryFees / Math.max(1, tripFinance.totalCost)) * 100)}% of the total budget.`}
+                                desc={`Mix includes ${paidActivities} paid and ${freeActivities} free activities. Entry fees are ${tripFinance.entryFees > 0 && Math.round((tripFinance.entryFees / Math.max(1, tripFinance.totalCost)) * 100) === 0 ? '<1' : Math.round((tripFinance.entryFees / Math.max(1, tripFinance.totalCost)) * 100)}% of the total budget.`}
                             />
                         </div>
                         <div className="absolute top-0 right-0 w-24 h-24 bg-orange-500/5 rounded-full -mr-12 -mt-12 blur-2xl" />
@@ -563,7 +557,7 @@ const DashboardPage = () => {
             </div>
 
             <footer className="text-center mt-20 text-xs text-[#94A3B8] font-medium tracking-wide no-print">
-                © 2024 BharatTravel AI • Crafted with love for Indian Tourism
+                © 2024 Smart Yatra • Crafted with love for Indian Tourism
             </footer>
         </div>
     );
@@ -581,9 +575,9 @@ const ActivityCard = ({ activity, destination, onViewMap }) => {
     return (
         <motion.div
             whileHover={{ x: 6 }}
-            className="bg-white rounded-[28px] p-5 border border-[#F1F5F9] shadow-sm flex gap-5 group hover:border-blue-200 hover:shadow-md transition-all duration-300 print-card"
+            className="bg-white rounded-[24px] md:rounded-[28px] p-4 md:p-5 border border-[#F1F5F9] shadow-sm flex flex-col sm:flex-row gap-4 md:gap-5 group hover:border-blue-200 hover:shadow-md transition-all duration-300 print-card"
         >
-            <div className="w-44 h-36 rounded-2xl overflow-hidden shrink-0 bg-gray-100">
+            <div className="w-full sm:w-44 h-48 sm:h-36 rounded-2xl overflow-hidden shrink-0 bg-gray-100">
                 <img
                     src={imgError ? fallbackImg : (activity.image || fallbackImg)}
                     onError={() => setImgError(true)}

@@ -11,11 +11,11 @@ import {
     ArrowRight
 } from 'lucide-react';
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, onClose }) => {
     const navigate = useNavigate();
 
     return (
-        <aside className="w-64 bg-white border-r border-[#E2E8F0] h-screen fixed left-0 top-0 flex flex-col z-50 no-print">
+        <aside className={`w-64 bg-white border-r border-[#E2E8F0] h-screen fixed left-0 top-0 flex flex-col z-50 no-print transition-transform duration-300 lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
             <div className="p-6">
                 <div
                     className="flex items-center gap-3 mb-10 cursor-pointer"
@@ -25,17 +25,17 @@ const Sidebar = () => {
                         <Navigation className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                        <h1 className="text-lg font-bold text-gray-900 leading-tight">Smart Travel</h1>
+                        <h1 className="text-lg font-bold text-gray-900 leading-tight">Smart Yatra</h1>
                         <p className="text-[10px] font-medium text-gray-400 tracking-wider uppercase">AI Tourism India</p>
                     </div>
                 </div>
 
                 <nav className="space-y-1">
-                    <SidebarItem to="/" icon={<LayoutDashboard size={20} />} label="Dashboard" />
-                    <SidebarItem to="/my-trips" icon={<Map size={20} />} label="My Trips" />
-                    <SidebarItem to="/plan" icon={<Sparkles size={20} />} label="Plan New Trip" />
-                    <SidebarItem to="/favorites" icon={<Heart size={20} />} label="Favorites" />
-                    <SidebarItem to="/settings" icon={<Settings size={20} />} label="Settings" />
+                    <SidebarItem to="/" icon={<LayoutDashboard size={20} />} label="Dashboard" onClick={onClose} />
+                    <SidebarItem to="/my-trips" icon={<Map size={20} />} label="My Trips" onClick={onClose} />
+                    <SidebarItem to="/plan" icon={<Sparkles size={20} />} label="Plan New Trip" onClick={onClose} />
+                    <SidebarItem to="/favorites" icon={<Heart size={20} />} label="Favorites" onClick={onClose} />
+                    <SidebarItem to="/settings" icon={<Settings size={20} />} label="Settings" onClick={onClose} />
                 </nav>
             </div>
 
@@ -57,9 +57,10 @@ const Sidebar = () => {
     );
 };
 
-const SidebarItem = ({ to, icon, label }) => (
+const SidebarItem = ({ to, icon, label, onClick }) => (
     <NavLink
         to={to}
+        onClick={onClick}
         className={({ isActive }) =>
             `sidebar-link ${isActive ? 'active' : ''}`
         }

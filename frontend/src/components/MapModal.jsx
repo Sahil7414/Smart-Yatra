@@ -293,54 +293,54 @@ const MapModal = ({ placeName, city, places, mode = 'route', onClose }) => {
             }}
         >
             <div
-                className="bg-white rounded-3xl overflow-hidden flex flex-col"
-                style={{ width: '90vw', maxWidth: 1000, height: '82vh', boxShadow: '0 32px 80px rgba(0,0,0,0.4)' }}
+                className="bg-white rounded-2xl md:rounded-3xl overflow-hidden flex flex-col"
+                style={{ width: '95vw', maxWidth: 1000, height: '90vh', maxHeight: '90vh', boxShadow: '0 32px 80px rgba(0,0,0,0.4)' }}
             >
-                <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-white shrink-0">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-2xl bg-blue-600 flex items-center justify-center">
-                            <Navigation size={18} className="text-white" />
+                <div className="flex items-center justify-between px-4 md:px-6 py-3 md:py-4 border-b border-gray-100 bg-white shrink-0">
+                    <div className="flex items-center gap-3 min-w-0">
+                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-blue-600 flex items-center justify-center shrink-0">
+                            <Navigation size={16} className="text-white" />
                         </div>
-                        <div>
-                            <h3 className="font-black text-[#0F172A] text-base leading-tight">{title}</h3>
-                            <p className="text-[12px] text-gray-400 font-medium">{city}, India</p>
+                        <div className="min-w-0">
+                            <h3 className="font-black text-[#0F172A] text-sm md:text-base leading-tight truncate break-words">{title}</h3>
+                            <p className="text-[10px] md:text-[12px] text-gray-400 font-medium truncate">{city}, India</p>
                         </div>
                     </div>
 
                     {!multiPlaceMode && info && (
-                        <div className="flex items-center gap-4 bg-blue-50 border border-blue-100 rounded-2xl px-4 py-2">
+                        <div className="flex items-center gap-2 md:gap-4 bg-blue-50 border border-blue-100 rounded-xl md:rounded-2xl px-2 md:px-4 py-1.5 md:py-2 mx-2">
                             <div className="text-center">
-                                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Distance</p>
-                                <p className="text-sm font-black text-blue-600">{info.distance} km</p>
+                                <p className="hidden sm:block text-[8px] md:text-[10px] text-gray-400 font-bold uppercase tracking-widest">Dist</p>
+                                <p className="text-[11px] md:text-sm font-black text-blue-600">{info.distance}km</p>
                             </div>
-                            <div className="w-px h-8 bg-blue-200" />
+                            <div className="w-px h-6 md:h-8 bg-blue-200" />
                             <div className="text-center">
-                                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Est. Time</p>
-                                <p className="text-sm font-black text-blue-600">
-                                    {info.duration >= 60 ? `${Math.floor(info.duration / 60)}h ${info.duration % 60}m` : `${info.duration} min`}
+                                <p className="hidden sm:block text-[8px] md:text-[10px] text-gray-400 font-bold uppercase tracking-widest">Time</p>
+                                <p className="text-[11px] md:text-sm font-black text-blue-600">
+                                    {info.duration >= 60 ? `${Math.floor(info.duration / 60)}h${info.duration % 60}m` : `${info.duration}m`}
                                 </p>
                             </div>
                         </div>
                     )}
                     {multiPlaceMode && status === 'ready' && (
-                        <div className="bg-blue-50 border border-blue-100 rounded-2xl px-4 py-2">
-                            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Highlighted</p>
-                            <p className="text-sm font-black text-blue-600">{highlightedCount} places</p>
+                        <div className="bg-blue-50 border border-blue-100 rounded-xl md:rounded-2xl px-3 md:px-4 py-1.5 md:py-2 mx-2">
+                            <p className="hidden sm:block text-[8px] md:text-[10px] text-gray-400 font-bold uppercase tracking-widest">Places</p>
+                            <p className="text-[11px] md:text-sm font-black text-blue-600">{highlightedCount}</p>
                         </div>
                     )}
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 md:gap-3">
                         {!multiPlaceMode && locating && status === 'ready' && (
-                            <div className="flex items-center gap-2 text-xs text-gray-400 font-medium">
+                            <div className="hidden lg:flex items-center gap-2 text-xs text-gray-400 font-medium">
                                 <Loader2 size={13} className="animate-spin text-blue-500" />
-                                <span>Getting your location...</span>
+                                <span>Locating...</span>
                             </div>
                         )}
                         <button
                             onClick={onClose}
-                            className="w-9 h-9 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-500 flex items-center justify-center transition-colors"
+                            className="w-8 h-8 md:w-9 md:h-9 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-500 flex items-center justify-center transition-colors shrink-0"
                         >
-                            <X size={18} />
+                            <X size={16} />
                         </button>
                     </div>
                 </div>
