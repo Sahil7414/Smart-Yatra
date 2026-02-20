@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -24,8 +24,11 @@ import {
     Bed,
     Utensils,
     Briefcase,
-    Languages
+    Languages,
+    ShieldCheck
 } from 'lucide-react';
+import MapModal from '../components/MapModal';
+import { getLatestTrip, isFavoritePlace, toggleFavoritePlace } from '../utils/storage';
 
 const ReadinessCenter = ({ packingList, localPhrases, destination }) => {
     if ((!packingList || packingList.length === 0) && (!localPhrases || localPhrases.length === 0)) return null;
@@ -163,8 +166,6 @@ const Confetti = () => {
     );
 };
 
-import MapModal from '../components/MapModal';
-import { getLatestTrip, isFavoritePlace, toggleFavoritePlace } from '../utils/storage';
 
 const ConciergeCard = ({ items, title, icon, color }) => {
     if (!items || items.length === 0) return null;

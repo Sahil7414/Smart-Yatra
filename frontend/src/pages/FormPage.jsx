@@ -383,36 +383,36 @@ const FormPage = () => {
                         )}
                     </button>
                 </div>
+            </div>
 
-                {/* Footer Trust Section */}
-                <div className="max-w-5xl mx-auto mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div className="flex items-center gap-4 bg-white p-6 rounded-3xl border border-[#F1F5F9]">
-                        <ShieldCheck className="text-blue-500" size={24} />
-                        <div>
-                            <h4 className="font-black text-[#1E293B] text-[13px] mb-0.5">Real-Time Data</h4>
-                            <p className="text-gray-500 text-[11px] font-medium leading-relaxed">Directly fetched from AI Places engine.</p>
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-4 bg-white p-6 rounded-3xl border border-[#F1F5F9]">
-                        <Zap className="text-blue-500" size={24} />
-                        <div>
-                            <h4 className="font-black text-[#1E293B] text-[13px] mb-0.5">Hyper Personalized</h4>
-                            <p className="text-gray-500 text-[11px] font-medium leading-relaxed">No hardcoded static lists.</p>
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-4 bg-white p-6 rounded-3xl border border-[#F1F5F9]">
-                        <Clock className="text-blue-500" size={24} />
-                        <div>
-                            <h4 className="font-black text-[#1E293B] text-[13px] mb-0.5">Always Fresh</h4>
-                            <p className="text-gray-500 text-[11px] font-medium leading-relaxed">Latest ratings and trending spots.</p>
-                        </div>
+            {/* Footer Trust Section */}
+            <div className="max-w-5xl mx-auto mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="flex items-center gap-4 bg-white p-6 rounded-3xl border border-[#F1F5F9]">
+                    <ShieldCheck className="text-blue-500" size={24} />
+                    <div>
+                        <h4 className="font-black text-[#1E293B] text-[13px] mb-0.5">Real-Time Data</h4>
+                        <p className="text-gray-500 text-[11px] font-medium leading-relaxed">Directly fetched from AI Places engine.</p>
                     </div>
                 </div>
-
-                <footer className="text-center mt-16 pb-10 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
-                    © 2024 Smart Yatra • Real-Time Travel Intelligence
-                </footer>
+                <div className="flex items-center gap-4 bg-white p-6 rounded-3xl border border-[#F1F5F9]">
+                    <Zap className="text-blue-500" size={24} />
+                    <div>
+                        <h4 className="font-black text-[#1E293B] text-[13px] mb-0.5">Hyper Personalized</h4>
+                        <p className="text-gray-500 text-[11px] font-medium leading-relaxed">No hardcoded static lists.</p>
+                    </div>
+                </div>
+                <div className="flex items-center gap-4 bg-white p-6 rounded-3xl border border-[#F1F5F9]">
+                    <Clock className="text-blue-500" size={24} />
+                    <div>
+                        <h4 className="font-black text-[#1E293B] text-[13px] mb-0.5">Always Fresh</h4>
+                        <p className="text-gray-500 text-[11px] font-medium leading-relaxed">Latest ratings and trending spots.</p>
+                    </div>
+                </div>
             </div>
+
+            <footer className="text-center mt-16 pb-10 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+                © 2024 Smart Yatra • Real-Time Travel Intelligence
+            </footer>
         </div>
     );
 };
