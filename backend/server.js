@@ -85,6 +85,12 @@ const httpsGet = (hostname, path) => new Promise((resolve, reject) => {
  */
 const getWikipediaImage = async (placeName, cityName = '') => {
   const cacheKey = placeName.toLowerCase().trim();
+
+  // Manual override for high-quality local assets
+  if (cacheKey.includes('golden temple') || cacheKey.includes('harmandir sahib')) {
+    return '/golden_temple.png';
+  }
+
   if (wikiCache[cacheKey]) return wikiCache[cacheKey];
 
   // Try different search terms, most specific first
