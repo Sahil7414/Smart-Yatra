@@ -55,6 +55,41 @@ const INDIAN_ATTRACTIONS = [
         image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Meenakshi_Amman_West_Tower.jpg/1280px-Meenakshi_Amman_West_Tower.jpg',
         tag: 'Spiritual'
     },
+    {
+        name: 'Victoria Memorial',
+        city: 'Kolkata',
+        rating: 4.6,
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Victoria_Memorial_situated_in_Kolkata.jpg/1280px-Victoria_Memorial_situated_in_Kolkata.jpg',
+        tag: 'Heritage'
+    },
+    {
+        name: 'Qutub Minar',
+        city: 'Delhi',
+        rating: 4.7,
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Qutub_Minar_in_May_2022.jpg/1280px-Qutub_Minar_in_May_2022.jpg',
+        tag: 'UNESCO'
+    },
+    {
+        name: 'Amer Fort',
+        city: 'Jaipur',
+        rating: 4.8,
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Amber_Fort_05.jpg/1280px-Amber_Fort_05.jpg',
+        tag: 'Fort'
+    },
+    {
+        name: 'Golden Temple',
+        city: 'Amritsar',
+        rating: 4.9,
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Harmandir_Sahib_in_August_2023.jpg/1280px-Harmandir_Sahib_in_August_2023.jpg',
+        tag: 'Divine'
+    },
+    {
+        name: 'Ellora Caves',
+        city: 'Aurangabad',
+        rating: 4.8,
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Ellora_cave_16_Kailasa_temple_01.jpg/1280px-Ellora_cave_16_Kailasa_temple_01.jpg',
+        tag: 'Ancient'
+    },
 ];
 
 const LandingPage = () => {
@@ -69,47 +104,29 @@ const LandingPage = () => {
         return `https://picsum.photos/seed/${safe}/1400/900`;
     };
 
-    const getCardOffset = (index) => index - activeIndex;
+    const getCardOffset = (index) => {
+        let diff = index - activeIndex;
+        const total = INDIAN_ATTRACTIONS.length;
+        // Shortest path for loop
+        if (diff > total / 2) diff -= total;
+        if (diff < -total / 2) diff += total;
+        return diff;
+    };
 
     const nextAttraction = () => {
-        setActiveIndex((prev) => {
-            if (prev >= maxIndex) {
-                directionRef.current = -1;
-                return Math.max(0, prev - 1);
-            }
-            directionRef.current = 1;
-            return prev + 1;
-        });
+        setActiveIndex((prev) => (prev + 1) % INDIAN_ATTRACTIONS.length);
     };
 
     const prevAttraction = () => {
-        setActiveIndex((prev) => {
-            if (prev <= 0) {
-                directionRef.current = 1;
-                return Math.min(maxIndex, prev + 1);
-            }
-            directionRef.current = -1;
-            return prev - 1;
-        });
+        setActiveIndex((prev) => (prev - 1 + INDIAN_ATTRACTIONS.length) % INDIAN_ATTRACTIONS.length);
     };
 
     useEffect(() => {
         const id = setInterval(() => {
-            setActiveIndex((prev) => {
-                const next = prev + directionRef.current;
-                if (next > maxIndex) {
-                    directionRef.current = -1;
-                    return Math.max(0, prev - 1);
-                }
-                if (next < 0) {
-                    directionRef.current = 1;
-                    return Math.min(maxIndex, prev + 1);
-                }
-                return next;
-            });
+            nextAttraction();
         }, 3200);
         return () => clearInterval(id);
-    }, [maxIndex]);
+    }, []);
 
     return (
         <div className="min-h-screen bg-white relative overflow-hidden">
