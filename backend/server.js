@@ -90,10 +90,11 @@ const getWikipediaImage = async (placeName, cityName = '') => {
   // Try different search terms, most specific first
   const queries = [
     placeName,
-    `${placeName} ${cityName}`.trim(),
+    cityName && placeName.includes(cityName) ? placeName : `${placeName}, ${cityName}`.trim(),
     placeName.split('(')[0].trim(),
     placeName.split(',')[0].trim(),
-  ].filter((q, i, arr) => q && arr.indexOf(q) === i); // unique non-empty
+    placeName.replace(/Fort|Palace|Temple|Temple Complex|Beach|Lake|National Park/g, '').trim(),
+  ].filter((q, i, arr) => q && q.length > 3 && arr.indexOf(q) === i);
 
   for (const query of queries) {
     try {

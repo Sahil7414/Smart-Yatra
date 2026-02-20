@@ -94,10 +94,37 @@ const INDIAN_ATTRACTIONS = [
 
 const LandingPage = () => {
     const navigate = useNavigate();
+    const [attractions, setAttractions] = useState(INDIAN_ATTRACTIONS);
     const [activeIndex, setActiveIndex] = useState(0);
     const [failedImages, setFailedImages] = useState({});
     const directionRef = useRef(1);
     const maxIndex = INDIAN_ATTRACTIONS.length - 1;
+
+    // Batch fetch Wikipedia photos on mount
+    useEffect(() => {
+        const fetchWikiPhotos = async () => {
+            try {
+                const titles = INDIAN_ATTRACTIONS.map(a => encodeURIComponent(a.name)).join('|');
+                const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${titles}&prop=pageimages&format=json&pithumbsize=1000&origin=*`;
+
+                const response = await fetch(url);
+                const data = await response.json();
+                const pages = data?.query?.pages || {};
+
+                const updated = INDIAN_ATTRACTIONS.map(attr => {
+                    const page = Object.values(pages).find(p => p.title === attr.name);
+                    return {
+                        ...attr,
+                        image: page?.thumbnail?.source || attr.image
+                    };
+                });
+                setAttractions(updated);
+            } catch (err) {
+                console.warn("Wiki Batch Fetch failed, using fallbacks:", err);
+            }
+        };
+        fetchWikiPhotos();
+    }, []);
 
     const fallbackImage = (seed) => {
         const safe = String(seed).replace(/[^a-zA-Z0-9]/g, '').toLowerCase().slice(0, 24) || 'indiatravel';
@@ -114,19 +141,19 @@ const LandingPage = () => {
     };
 
     const nextAttraction = () => {
-        setActiveIndex((prev) => (prev + 1) % INDIAN_ATTRACTIONS.length);
+        setActiveIndex((prev) => (prev + 1) % attractions.length);
     };
 
     const prevAttraction = () => {
-        setActiveIndex((prev) => (prev - 1 + INDIAN_ATTRACTIONS.length) % INDIAN_ATTRACTIONS.length);
+        setActiveIndex((prev) => (prev - 1 + attractions.length) % attractions.length);
     };
 
     useEffect(() => {
         const id = setInterval(() => {
-            nextAttraction();
+            setActiveIndex((prev) => (prev + 1) % attractions.length);
         }, 3200);
         return () => clearInterval(id);
-    }, []);
+    }, [attractions.length]);
 
     return (
         <div className="min-h-screen bg-white relative overflow-hidden">
@@ -214,10 +241,11 @@ const LandingPage = () => {
                     </div>
 
                     <div className="relative h-[280px] md:h-[350px]" style={{ perspective: '1400px' }}>
-                        {INDIAN_ATTRACTIONS.map((place, idx) => {
+                        {attractions.map((place, idx) => {
                             const offset = getCardOffset(idx);
                             const absOffset = Math.abs(offset);
-                            const hidden = absOffset > 2;
+                            const total = attractions.length;
+                            const hidden = absOffset > 3; // Show slightly more for depth
 
                             return (
                                 <motion.button
