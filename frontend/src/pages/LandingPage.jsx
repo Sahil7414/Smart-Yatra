@@ -173,9 +173,9 @@ const LandingPage = () => {
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
-                    className="mt-20 w-full max-w-6xl"
+                    className="mt-8 w-full max-w-6xl"
                 >
-                    <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center justify-between mb-2">
                         <div className="text-left">
                             <p className="text-[11px] font-black text-blue-600 uppercase tracking-[0.24em]">Live Attraction Feed</p>
                             <h3 className="text-2xl md:text-3xl font-black text-[#0F172A] mt-2">Top Places Across India</h3>
@@ -196,7 +196,7 @@ const LandingPage = () => {
                         </div>
                     </div>
 
-                    <div className="relative overflow-hidden h-[350px] md:h-[440px]" style={{ perspective: '1400px' }}>
+                    <div className="relative h-[280px] md:h-[350px]" style={{ perspective: '1400px' }}>
                         {INDIAN_ATTRACTIONS.map((place, idx) => {
                             const offset = getCardOffset(idx);
                             const absOffset = Math.abs(offset);
@@ -217,7 +217,7 @@ const LandingPage = () => {
                                         zIndex: 30 - absOffset,
                                     }}
                                     transition={{ type: 'spring', stiffness: 220, damping: 26 }}
-                                    className="group absolute left-1/2 top-1/2 h-[250px] w-[180px] md:h-[320px] md:w-[240px] -translate-x-1/2 -translate-y-1/2 rounded-2xl overflow-hidden shadow-2xl text-left"
+                                    className="group absolute left-1/2 top-0 h-[250px] w-[180px] md:h-[320px] md:w-[240px] -translate-x-1/2 rounded-2xl overflow-hidden shadow-2xl text-left"
                                     style={{
                                         transformStyle: 'preserve-3d',
                                         pointerEvents: hidden ? 'none' : 'auto',
