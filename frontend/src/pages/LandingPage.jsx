@@ -13,83 +13,17 @@ import {
 } from 'lucide-react';
 
 const INDIAN_ATTRACTIONS = [
-    {
-        name: 'Gateway of India',
-        city: 'Mumbai',
-        rating: 4.7,
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Gateway_of_India%2C_Mumbai.jpg/1280px-Gateway_of_India%2C_Mumbai.jpg',
-        tag: 'Heritage'
-    },
-    {
-        name: 'Taj Mahal',
-        city: 'Agra',
-        rating: 4.9,
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Taj-Mahal.jpg/1280px-Taj-Mahal.jpg',
-        tag: 'Wonder'
-    },
-    {
-        name: 'Hawa Mahal',
-        city: 'Jaipur',
-        rating: 4.7,
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Hawa_Mahal_2011.jpg/1280px-Hawa_Mahal_2011.jpg',
-        tag: 'Architecture'
-    },
-    {
-        name: 'Mysore Palace',
-        city: 'Mysuru',
-        rating: 4.8,
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Mysore_Palace_Morning.jpg/1280px-Mysore_Palace_Morning.jpg',
-        tag: 'Royal'
-    },
-    {
-        name: 'Dal Lake',
-        city: 'Srinagar',
-        rating: 4.8,
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Dal_Lake_Hazratbal_Srinagar.jpg/1280px-Dal_Lake_Hazratbal_Srinagar.jpg',
-        tag: 'Scenic'
-    },
-    {
-        name: 'Meenakshi Temple',
-        city: 'Madurai',
-        rating: 4.8,
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Meenakshi_Amman_West_Tower.jpg/1280px-Meenakshi_Amman_West_Tower.jpg',
-        tag: 'Spiritual'
-    },
-    {
-        name: 'Victoria Memorial',
-        city: 'Kolkata',
-        rating: 4.6,
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Victoria_Memorial_situated_in_Kolkata.jpg/1280px-Victoria_Memorial_situated_in_Kolkata.jpg',
-        tag: 'Heritage'
-    },
-    {
-        name: 'Qutub Minar',
-        city: 'Delhi',
-        rating: 4.7,
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Qutub_Minar_in_May_2022.jpg/1280px-Qutub_Minar_in_May_2022.jpg',
-        tag: 'UNESCO'
-    },
-    {
-        name: 'Amer Fort',
-        city: 'Jaipur',
-        rating: 4.8,
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Amber_Fort_05.jpg/1280px-Amber_Fort_05.jpg',
-        tag: 'Fort'
-    },
-    {
-        name: 'Golden Temple',
-        city: 'Amritsar',
-        rating: 4.9,
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Harmandir_Sahib_in_August_2023.jpg/1280px-Harmandir_Sahib_in_August_2023.jpg',
-        tag: 'Divine'
-    },
-    {
-        name: 'Ellora Caves',
-        city: 'Aurangabad',
-        rating: 4.8,
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Ellora_cave_16_Kailasa_temple_01.jpg/1280px-Ellora_cave_16_Kailasa_temple_01.jpg',
-        tag: 'Ancient'
-    },
+    { name: 'Gateway of India', city: 'Mumbai', rating: 4.7, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Gateway_of_India%2C_Mumbai.jpg/1280px-Gateway_of_India%2C_Mumbai.jpg', tag: 'Heritage' },
+    { name: 'Taj Mahal', city: 'Agra', rating: 4.9, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Taj-Mahal.jpg/1280px-Taj-Mahal.jpg', tag: 'Wonder' },
+    { name: 'Hawa Mahal', city: 'Jaipur', rating: 4.7, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Hawa_Mahal_2011.jpg/1280px-Hawa_Mahal_2011.jpg', tag: 'Architecture' },
+    { name: 'Mysore Palace', city: 'Mysuru', rating: 4.8, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Mysore_Palace_Morning.jpg/1280px-Mysore_Palace_Morning.jpg', tag: 'Royal' },
+    { name: 'Dal Lake', city: 'Srinagar', rating: 4.8, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Dal_Lake_Hazratbal_Srinagar.jpg/1280px-Dal_Lake_Hazratbal_Srinagar.jpg', tag: 'Scenic' },
+    { name: 'Meenakshi Temple', city: 'Madurai', rating: 4.8, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Meenakshi_Amman_West_Tower.jpg/1280px-Meenakshi_Amman_West_Tower.jpg', tag: 'Spiritual' },
+    { name: 'Victoria Memorial, Kolkata', city: 'Kolkata', rating: 4.6, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Victoria_Memorial_situated_in_Kolkata.jpg/1280px-Victoria_Memorial_situated_in_Kolkata.jpg', tag: 'Heritage' },
+    { name: 'Qutub Minar', city: 'Delhi', rating: 4.7, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Qutub_Minar_in_May_2022.jpg/1280px-Qutub_Minar_in_May_2022.jpg', tag: 'UNESCO' },
+    { name: 'Amber Fort', city: 'Jaipur', rating: 4.8, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Amber_Fort_05.jpg/1280px-Amber_Fort_05.jpg', tag: 'Fort' },
+    { name: 'Golden Temple', city: 'Amritsar', rating: 4.9, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Harmandir_Sahib_in_August_2023.jpg/1280px-Harmandir_Sahib_in_August_2023.jpg', tag: 'Divine' },
+    { name: 'Ellora Caves', city: 'Aurangabad', rating: 4.8, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Ellora_cave_16_Kailasa_temple_01.jpg/1280px-Ellora_cave_16_Kailasa_temple_01.jpg', tag: 'Ancient' },
 ];
 
 const LandingPage = () => {
@@ -105,14 +39,19 @@ const LandingPage = () => {
         const fetchWikiPhotos = async () => {
             try {
                 const titles = INDIAN_ATTRACTIONS.map(a => encodeURIComponent(a.name)).join('|');
-                const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${titles}&prop=pageimages&format=json&pithumbsize=1000&origin=*`;
+                // Added redirects=1 to handle common name mapping (e.g. Amer Fort -> Amber Fort)
+                const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${titles}&prop=pageimages&format=json&pithumbsize=1000&origin=*&redirects=1`;
 
                 const response = await fetch(url);
                 const data = await response.json();
                 const pages = data?.query?.pages || {};
+                const redirects = data?.query?.redirects || [];
 
                 const updated = INDIAN_ATTRACTIONS.map(attr => {
-                    const page = Object.values(pages).find(p => p.title === attr.name);
+                    // Find actual page after potential redirect
+                    const redirectedTo = redirects.find(r => r.from === attr.name)?.to || attr.name;
+                    const page = Object.values(pages).find(p => p.title === redirectedTo);
+
                     return {
                         ...attr,
                         image: page?.thumbnail?.source || attr.image
