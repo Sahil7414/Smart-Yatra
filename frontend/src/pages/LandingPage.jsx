@@ -48,7 +48,10 @@ const LandingPage = () => {
                 const redirects = data?.query?.redirects || [];
 
                 const updated = INDIAN_ATTRACTIONS.map(attr => {
-                    // Find actual page after potential redirect
+                    // Force the user-selected high-quality image for Golden Temple
+                    if (attr.name === 'Golden Temple') return attr;
+
+                    // Find actual page after potential redirect for others
                     const searchTitle = attr.wikiName || attr.name;
                     const redirectedTo = redirects.find(r => r.from === searchTitle)?.to || searchTitle;
                     const page = Object.values(pages).find(p => p.title === redirectedTo);
