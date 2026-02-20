@@ -51,3 +51,6 @@ An AI-powered travel itinerary planner built for hackathons.
 - ✅ **Clean UI**: Premium design with soft shadows and glassmorphism.
 - ✅ **Responsive**: Works on mobile and desktop.
 - ✅ **Local Dataset**: Fast and reliable data sourcing.
+
+## PPT Link
+- https://docs.google.com/presentation/d/1uYhz-q6SrcVbIq9glzuJZfRl27KyTAWQ/edit?usp=drive_link&ouid=109233741745053716629&rtpof=true&sd=true
